@@ -1,48 +1,49 @@
 #include "sort.h"
 #include <stdbool.h>
 
-
 /**
- * swap_ints - Swap two integers in an array.
- * @a: The first integer to swap.
- * @b: The second integer to swap.
- */
-void swap_ints(int *a, int *b)
-{
-	int tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
-
-/**
- * bubble_sort - Sort an array of integers in ascending order.
- * @array: An array of integers to sort.
- * @size: The size of the array.
+ * insertion_sort_list - Sort a doubly linked list of integers in ascending order
+ *                       using the Insertion sort algorithm.
  *
- * Description: Prints the array after each swap.
+ * @list: Double pointer to the head of the list.
  */
-void bubble_sort(int *array, size_t size)
+void insertion_sort_list(listint_t **list)
 {
-	size_t i, len = size;
-	bool bubbly = false;
+    if (list == NULL || *list == NULL || (*list)->next == NULL)
+        return;
 
-	if (array == NULL || size < 2)
-		return;
+    listint_t *sorted = NULL;
+    listint_t *current = *list;
 
-	while (bubbly == false)
-	{
-		bubbly = true;
-		for (i = 0; i < len - 1; i++)
-		{
-			if (array[i] > array[i + 1])
-			{
-				swap_ints(array + i, array + i + 1);
-				print_array(array, size);
-				bubbly = false;
-			}
-		}
-		len--;
-	}
+    while (current != NULL)
+    {
+        listint_t *next = current->next;
+        listint_t *tail = sorted;
+
+        if (sorted == NULL || sorted->n >= current->n)
+        {
+            current->next = sorted;
+            current->prev = NULL;
+            if (sorted)
+                sorted->prev = current;
+            sorted = current;
+        }
+        else
+        {
+            while (tail->next != NULL && tail->next->n < current->n)
+                tail = tail->next;
+
+            current->next = tail->next;
+            if (tail->next)
+                tail->next->prev = current;
+            tail->next = current;
+            current->prev = tail;
+        }
+
+        current = next;
+        print_list(*list);
+    }
+
+    *list = sorted;
 }
+
