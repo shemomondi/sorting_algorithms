@@ -2,48 +2,46 @@
 #include <stdbool.h>
 
 /**
- * insertion_sort_list - Sort a doubly linked list of integers in ascending order
- *                       using the Insertion sort algorithm.
- *
- * @list: Double pointer to the head of the list.
+ * swap_ints - Swap two integers in an array.
+ * @a: The first integer to swap.
+ * @b: The second integer to swap.
  */
-void insertion_sort_list(listint_t **list)
+void swap_ints(int *a, int *b)
 {
-    if (list == NULL || *list == NULL || (*list)->next == NULL)
+    int tmp;
+    tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+/**
+ * bubble_sort - Sort an array of integers in ascending order.
+ * @array: An array of integers to sort.
+ * @size: The size of the array.
+ *
+ * Description: Prints the array after each swap.
+ */
+void bubble_sort(int *array, size_t size)
+{
+    size_t i, len = size;
+    bool bubbly = false;
+
+    if (array == NULL || size < 2)
         return;
 
-    listint_t *sorted = NULL;
-    listint_t *current = *list;
-
-    while (current != NULL)
+    while (bubbly == false)
     {
-        listint_t *next = current->next;
-        listint_t *tail = sorted;
-
-        if (sorted == NULL || sorted->n >= current->n)
+        bubbly = true;
+        for (i = 0; i < len - 1; i++)
         {
-            current->next = sorted;
-            current->prev = NULL;
-            if (sorted)
-                sorted->prev = current;
-            sorted = current;
+            if (array[i] > array[i + 1])
+            {
+                swap_ints(array + i, array + i + 1);
+                print_array(array, size);
+                bubbly = false;
+            }
         }
-        else
-        {
-            while (tail->next != NULL && tail->next->n < current->n)
-                tail = tail->next;
-
-            current->next = tail->next;
-            if (tail->next)
-                tail->next->prev = current;
-            tail->next = current;
-            current->prev = tail;
-        }
-
-        current = next;
-        print_list(*list);
+        len--;
     }
-
-    *list = sorted;
 }
 
