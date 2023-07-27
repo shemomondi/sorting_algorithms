@@ -2,42 +2,30 @@
 #include "sort.h"
 
 /**
- * insertion_sort_list - Sorts a doubly linked list of integers
- * in ascending order using Insertion sort
+ * bubble_sort - Sorts an array of integers in ascending order using Bubble sort
  *
- * @list: Pointer to the pointer to the head of the list
+ * @array: The array to be sorted
+ * @size: Number of elements in @array
  */
-void insertion_sort_list(listint_t **list)
+void bubble_sort(int *array, size_t size)
 {
-    if (list == NULL || *list == NULL || (*list)->next == NULL)
-        return;
+    size_t i, j;
+    int temp;
 
-    listint_t *current;
-    listint_t *next_node;
-    listint_t *temp;
-
-    current = (*list)->next;
-
-    while (current != NULL)
+    for (i = 0; i < size - 1; i++)
     {
-        next_node = current->next;
-
-        while (current->prev != NULL && current->n < current->prev->n)
+        for (j = 0; j < size - i - 1; j++)
         {
-            temp = current->prev;
-            temp->next = current->next;
-            if (current->next != NULL)
-                current->next->prev = temp;
-            current->prev = temp->prev;
-            if (temp->prev != NULL)
-                temp->prev->next = current;
-            else
-                *list = current;
-            temp->prev = current;
-            current->next = temp;
-            print_list(*list);
-        }
+            if (array[j] > array[j + 1])
+            {
+                /* Swap the elements */
+                temp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = temp;
 
-        current = next_node;
+                /* Print the array after each swap */
+                print_array(array, size);
+            }
+        }
     }
 }
